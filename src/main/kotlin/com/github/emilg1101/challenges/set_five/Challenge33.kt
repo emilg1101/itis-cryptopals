@@ -3,6 +3,19 @@ package com.github.emilg1101.challenges.set_five
 import java.math.BigInteger
 import java.util.*
 
+fun modPow(_a: BigInteger, _x: BigInteger, _p: BigInteger): BigInteger {
+    var x = _x
+    var a = _a
+    var answer = BigInteger("1")
+    val two = BigInteger("2")
+    while (x > BigInteger.ZERO) {
+        if (x.mod(two) == BigInteger.ONE) answer = answer.multiply(a).mod(_p)
+        x = x.shiftRight(1)
+        a = a.multiply(a).mod(_p)
+    }
+    return answer
+}
+
 class DiffieHellman(private val p: BigInteger, private val g: BigInteger) {
 
     private val privateKey: BigInteger = BigInteger(1023, Random())
@@ -13,19 +26,6 @@ class DiffieHellman(private val p: BigInteger, private val g: BigInteger) {
 
     fun sharedKeyGen(pubKey: BigInteger): BigInteger {
         return modPow(pubKey, privateKey, p)
-    }
-
-    private fun modPow(_a: BigInteger, _x: BigInteger, _p: BigInteger): BigInteger {
-        var x = _x
-        var a = _a
-        var answer = BigInteger("1")
-        val two = BigInteger("2")
-        while (x > BigInteger.ZERO) {
-            if (x.mod(two) == BigInteger.ONE) answer = answer.multiply(a).mod(_p)
-            x = x.shiftRight(1)
-            a = a.multiply(a).mod(_p)
-        }
-        return answer
     }
 }
 

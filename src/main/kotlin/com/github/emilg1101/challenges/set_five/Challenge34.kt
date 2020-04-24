@@ -8,24 +8,24 @@ import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
-private fun generateRandomArray(): ByteArray =
+fun generateRandomArray(): ByteArray =
     ByteArray(16).apply {
         Random().nextBytes(this)
     }
 
-private fun aesEncrypt(key: ByteArray, iv: ByteArray, msg: ByteArray): ByteArray =
+fun aesEncrypt(key: ByteArray, iv: ByteArray, msg: ByteArray): ByteArray =
     Cipher.getInstance("AES/CBC/PKCS5Padding").apply {
         init(Cipher.ENCRYPT_MODE, SecretKeySpec(key, "AES"), IvParameterSpec(iv))
     }.doFinal(msg)
 
-private fun aesDecrypt(key: ByteArray, iv: ByteArray, msg: ByteArray): ByteArray =
+fun aesDecrypt(key: ByteArray, iv: ByteArray, msg: ByteArray): ByteArray =
     Cipher.getInstance("AES/CBC/PKCS5Padding").apply {
         init(Cipher.DECRYPT_MODE, SecretKeySpec(key, "AES"), IvParameterSpec(iv))
     }.doFinal(msg)
 
-private fun ByteArray.iv() = this.takeLast(16).toByteArray()
+fun ByteArray.iv() = this.takeLast(16).toByteArray()
 
-private fun ByteArray.msg() = this.dropLast(16).toByteArray()
+fun ByteArray.msg() = this.dropLast(16).toByteArray()
 
 fun main() {
     val p = BigInteger(
@@ -37,6 +37,9 @@ fun main() {
                 "9ed529077096966d670c354e4abc9804f1746c08ca237327ffffffffffffffff", 16
     )
     val g = BigInteger.valueOf(2L)
+    // val g = BigInteger.valueOf(1L)
+    // val g = p
+    // val g = g - BigInteger.valueOf(1L)
 
     val aliceDH = DiffieHellman(p, g)
     val bobDH = DiffieHellman(p, g)
