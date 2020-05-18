@@ -22,7 +22,15 @@ fun main() {
     println(decrypted == stringToEncode)
 }
 
-class RSA(keyLength: Int) {
+interface Encrypter {
+    fun encrypt(base: BigInteger): BigInteger
+}
+
+interface Decrypter {
+    fun decrypt(base: BigInteger): BigInteger
+}
+
+class RSA(keyLength: Int): Encrypter, Decrypter {
 
     private val random = Random.asJavaRandom()
     var e = BigInteger.valueOf(3)
@@ -44,7 +52,7 @@ class RSA(keyLength: Int) {
         d = e modinv phi
     }
 
-    fun encrypt(base: BigInteger): BigInteger = base.modPow(e, n)
+    override fun encrypt(base: BigInteger): BigInteger = base.modPow(e, n)
 
-    fun decrypt(base: BigInteger): BigInteger = base.modPow(d, n)
+    override fun decrypt(base: BigInteger): BigInteger = base.modPow(d, n)
 }
